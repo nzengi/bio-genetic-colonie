@@ -1,4 +1,4 @@
-# Autonomous Synthetic Bio-Colonies (ASBC)
+# Autonomous Synthetic Bio-Colonies (ASBC) by zengi S03X-SCA
 
 ## Overview
 

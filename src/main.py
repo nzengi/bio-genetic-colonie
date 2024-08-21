@@ -1,4 +1,4 @@
-from genetic_algorithm import GeneticAlgorithm
+import genetic_algorithm_cpp as ga_cpp
 from blockchain_interface import BlockchainInterface
 from logger import setup_logger, log_generation
 
@@ -21,13 +21,16 @@ blockchain_interface = BlockchainInterface(PROVIDER_URL, CONTRACT_ADDRESS, contr
 # Setup the logger
 logger = setup_logger()
 
-# List of accounts (simulate Ethereum addresses)
-accounts = ["0xAccount1", "0xAccount2", "0xAccount3", "0xAccount4", "0xAccount5"]  # Replace with real accounts
+# Initialize the C++ genetic algorithm
+genetic_algorithm = ga_cpp.GeneticAlgorithm(POPULATION_SIZE, GENE_LENGTH, GENERATIONS, MUTATION_RATE)
+genetic_algorithm.run()
 
-# Run the genetic algorithm
-genetic_algorithm = GeneticAlgorithm(POPULATION_SIZE, GENE_LENGTH, GENERATIONS, MUTATION_RATE, blockchain_interface, accounts)
-best_robot = genetic_algorithm.run()
+# Get the best robot
+best_robot = genetic_algorithm.get_best_robot()
 
 # Log the result
 log_generation(logger, GENERATIONS, best_robot.fitness)
 print(f"Best Robot Genes: {best_robot.genes}, Fitness: {best_robot.fitness}")
+
+# Update blockchain with best robot's performance
+blockchain_interface.verify_task(best_robot.address, int(best_robot.fitness))

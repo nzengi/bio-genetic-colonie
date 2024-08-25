@@ -1,18 +1,25 @@
-class ColonyInteraction:
-    def __init__(self, colony1, colony2):
-        self.colony1 = colony1
-        self.colony2 = colony2
+import pandas as pd
 
-    def exchange_information(self):
-        # Koloniler arasındaki bilgi alışverişini genişlet
-        best_individual_colony1 = max(self.colony1.genetic_algorithm.population, key=self.colony1.genetic_algorithm.fitness)
-        best_individual_colony2 = max(self.colony2.genetic_algorithm.population, key=self.colony2.genetic_algorithm.fitness)
+def generate_report(performance_data, filename="performance_report.csv"):
+    # Performans verilerini bir CSV dosyasına kaydet
+    df = pd.DataFrame(performance_data, columns=["Generation", "Colony Alpha Best Fitness", "Colony Beta Best Fitness", "Strategy"])
+    df.to_csv(filename, index=False)
 
-        # Stratejik bilgi paylaşımı (örneğin, hayatta kalma stratejileri)
-        strategy_colony1 = sum(best_individual_colony1) / len(best_individual_colony1)
-        strategy_colony2 = sum(best_individual_colony2) / len(best_individual_colony2)
+def analyze_performance(performance_data):
+    # Verileri analiz et ve özet rapor oluştur
+    df = pd.DataFrame(performance_data, columns=["Generation", "Colony Alpha Best Fitness", "Colony Beta Best Fitness", "Strategy"])
+    
+    # Koloni performansını karşılaştır
+    alpha_avg_fitness = df["Colony Alpha Best Fitness"].mean()
+    beta_avg_fitness = df["Colony Beta Best Fitness"].mean()
+    
+    # En iyi strateji hangisi?
+    strategy_counts = df["Strategy"].value_counts()
+    
+    print("---- Performance Analysis ----")
+    print(f"Average Best Fitness of Colony Alpha: {alpha_avg_fitness}")
+    print(f"Average Best Fitness of Colony Beta: {beta_avg_fitness}")
+    print("Strategy Distribution:")
+    print(strategy_counts)
 
-        if strategy_colony1 > strategy_colony2:
-            self.colony2.genetic_algorithm.population.append(best_individual_colony1)
-        else:
-            self.colony1.genetic_algorithm.population.append(best_individual_colony2)
+    return df

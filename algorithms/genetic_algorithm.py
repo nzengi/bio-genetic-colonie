@@ -36,7 +36,15 @@ class GeneticAlgorithm:
             if random.random() < self.mutation_rate:
                 individual[i] = 1 - individual[i]
         return individual
-
+        
+    def fitness(self, individual):
+        # Bireyin uygunluğunu değerlendirirken farklı faktörler göz önünde bulundurulacak
+        # Örneğin, birden fazla kriteri birleştirerek daha karmaşık bir uygunluk fonksiyonu oluşturacağız.
+        # Bu sadece örnek bir karmaşık uygunluk fonksiyonu:
+        survival_factor = sum(individual)
+        efficiency_factor = len(set(individual))
+        return survival_factor * efficiency_factor
+ 
     def evolve(self):
         # Yeni bir nesil oluştur
         new_population = []
